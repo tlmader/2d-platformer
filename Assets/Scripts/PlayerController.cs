@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 
 	[HideInInspector]
 	public bool facingRight = true;
+	public bool grounded = false;
 	[HideInInspector]
 	public bool jump = false;
 	public float moveForce = 365f;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
 	public float jumpForce = 1000f;
 	public Transform groundCheck;
 
-	private bool grounded = false;
+	private float defaultGravityScale;
 	private Animator animator;
 	private Rigidbody2D body;
 
@@ -22,14 +23,15 @@ public class PlayerController : MonoBehaviour
 	{
 		animator = GetComponent<Animator>();
 		body = GetComponent<Rigidbody2D>();
+		defaultGravityScale = body.gravityScale;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		//grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
-		if (Input.GetButtonDown("Jump")) // && grounded
+		if (Input.GetButtonDown("Jump") && grounded)
 			jump = true;
 	}
 
