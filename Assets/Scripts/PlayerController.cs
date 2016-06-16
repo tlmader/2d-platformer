@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 
 	[HideInInspector]
 	public bool facingRight = true;
-	public bool grounded = false;
+	public bool moving = false;
 	[HideInInspector]
 	public bool jump = false;
 	public float moveForce = 365f;
@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	public float jumpForce = 1000f;
 	public Transform groundCheck;
 
+	private bool grounded = false;
 	private float defaultGravityScale;
 	private Animator animator;
 	private Rigidbody2D body;
