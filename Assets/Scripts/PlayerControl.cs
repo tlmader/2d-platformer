@@ -10,23 +10,38 @@ public class PlayerControl : MonoBehaviour
 	public bool grounded;
 
 	private Rigidbody2D body;
+	private Animator animator;
 
+	/**
+	 * This function instantiates component objects used by this script.
+	 */
 	void Start()
 	{
 		body = gameObject.GetComponent<Rigidbody2D>();
+		animator = gameObject.GetComponent<Animator>();
 	}
 
+
+	/**
+	 * This function handles all regular updates for the player character.
+	 */
 	void Update()
 	{
-		if (body.velocity.x > maxSpeed)
-			body.velocity = new Vector2(maxSpeed, body.velocity.y);
-		if (speed < -maxSpeed)
-			body.velocity = new Vector2(-maxSpeed, body.velocity.y);
+		animator.SetBool("Grounded", grounded);
+		animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
 	}
 
+	/**
+	 * This function handles all physics updates for the player character.
+	 */
 	void FixedUpdate()
 	{
 		float h = Input.GetAxis("Horizontal");
 		body.AddForce((Vector2.right * speed) * h);
+
+		if (body.velocity.x > maxSpeed)
+			body.velocity = new Vector2(maxSpeed, body.velocity.y);
+		if (speed < -maxSpeed)
+			body.velocity = new Vector2(-maxSpeed, body.velocity.y);
 	}
 }
