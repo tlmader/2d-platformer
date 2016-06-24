@@ -29,6 +29,11 @@ public class PlayerControl : MonoBehaviour
 	{
 		animator.SetBool("Grounded", grounded);
 		animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+
+		if (Input.GetAxis("Horizontal") < 0.1f)
+			transform.localScale = new Vector3(-1, 1, 1);
+		if (Input.GetAxis("Horizontal") > 0.1f)
+			transform.localScale = new Vector3(1, 1, 1);
 	}
 
 	/**
@@ -41,7 +46,7 @@ public class PlayerControl : MonoBehaviour
 
 		if (body.velocity.x > maxSpeed)
 			body.velocity = new Vector2(maxSpeed, body.velocity.y);
-		if (speed < -maxSpeed)
+		if (body.velocity.x < -maxSpeed)
 			body.velocity = new Vector2(-maxSpeed, body.velocity.y);
 	}
 }
