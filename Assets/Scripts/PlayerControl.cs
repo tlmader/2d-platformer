@@ -29,10 +29,10 @@ public class PlayerControl : MonoBehaviour
 	{
 		// Animator conditions
 		animator.SetBool("Grounded", grounded);
-		animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+		animator.SetFloat("Speed", Mathf.Abs(body.velocity.x));
 
 		// Adjusts sprite to movement along x-axis
-		if (Input.GetAxis("Horizontal") < 0.1f)
+		if (Input.GetAxis("Horizontal") < -0.1f)
 			transform.localScale = new Vector3(-1, 1, 1);
 		if (Input.GetAxis("Horizontal") > 0.1f)
 			transform.localScale = new Vector3(1, 1, 1);
