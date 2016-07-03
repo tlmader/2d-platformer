@@ -28,27 +28,27 @@ public class PlayerControlTest {
     }
 
 	[Test]
-	public void SetVelocityToMaxSpeed_VelocityXIsGreaterThanMaxSpeed_VelocityEqualsNewVectorWithXAsMaxSpeed()
+	public void GetCappedVelocity_VelocityXIsGreaterThanMaxSpeed_VelocityEqualsNewVectorWithXAsMaxSpeed()
 	{
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
 		body.velocity = new Vector2(4f, body.velocity.y);
 
 		var expected = new Vector2(playerControl.maxSpeed, body.velocity.y);
-		var actual = playerControl.SetVelocityToMaxSpeed();
+		var actual = playerControl.GetCappedVelocity();
 
 		Assert.AreEqual(expected, actual);
 	}
 
 	[Test]
-	public void SetVelocityToMaxSpeed_VelocityXIsLessThanNegativeMaxSpeed_VelocityEqualsNewVectorWithXAsNegativeMaxSpeed()
+	public void GetCappedVelocity_VelocityXIsLessThanNegativeMaxSpeed_VelocityEqualsNewVectorWithXAsNegativeMaxSpeed()
 	{
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
 		body.velocity = new Vector2(-4f, body.velocity.y);
 
 		var expected = new Vector2(-playerControl.maxSpeed, body.velocity.y);
-		var actual = playerControl.SetVelocityToMaxSpeed();
+		var actual = playerControl.GetCappedVelocity();
 
 		Assert.AreEqual(expected, actual);
 	}
