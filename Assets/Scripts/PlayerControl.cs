@@ -52,9 +52,19 @@ public class PlayerControl : MonoBehaviour
 		body.AddForce((Vector2.right * speed) * h);
 
 		// Cap velocity at max speed
+		SetVelocityToMaxSpeed();
+	}
+
+	public Vector2 SetVelocityToMaxSpeed()
+	{
 		if (body.velocity.x > maxSpeed)
 			body.velocity = new Vector2(maxSpeed, body.velocity.y);
 		if (body.velocity.x < -maxSpeed)
 			body.velocity = new Vector2(-maxSpeed, body.velocity.y);
+		return body.velocity;
+	}
+
+	public Rigidbody2D GetBody() {
+		return body;
 	}
 }
