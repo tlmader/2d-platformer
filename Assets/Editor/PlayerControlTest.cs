@@ -5,14 +5,16 @@ using UnityEngine;
 [TestFixture]
 public class PlayerControlTest {
 
-	private GameObject testObject;
+	private GameObject go;
 	private PlayerControl playerControl;
 
 	[SetUp]
 	protected void SetUp()
 	{
-		testObject = new GameObject();
-		playerControl = testObject.AddComponent<PlayerControl>();
+		go = new GameObject();
+		go.AddComponent<Rigidbody2D>();
+		playerControl = go.AddComponent<PlayerControl>();
+		playerControl.Start();
 	}
 
     [Test]
@@ -28,12 +30,13 @@ public class PlayerControlTest {
 	[Test]
 	public void SetVelocityToMaxSpeed_VelocityXIsGreaterThanMaxSpeed_VelocityEqualsNewVectorWithXAsMaxSpeed()
 	{
-
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
-		body.velocity = new Vector2(4f, body.velocity.x);
+		body.velocity = new Vector2(4f, body.velocity.y);
+
 		var expected = new Vector2(playerControl.maxSpeed, body.velocity.y);
 		var actual = playerControl.SetVelocityToMaxSpeed();
+
 		Assert.AreEqual(expected, actual);
 	}
 
@@ -42,9 +45,11 @@ public class PlayerControlTest {
 	{
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
-		body.velocity = new Vector2(-4f, body.velocity.x);
+		body.velocity = new Vector2(-4f, body.velocity.y);
+
 		var expected = new Vector2(-playerControl.maxSpeed, body.velocity.y);
 		var actual = playerControl.SetVelocityToMaxSpeed();
+
 		Assert.AreEqual(expected, actual);
 	}
 }
