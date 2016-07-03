@@ -18,17 +18,56 @@ public class PlayerControlTest {
 	}
 
     [Test]
-    public void FirstTest()
-    {
-        var found = GameObject.FindGameObjectWithTag("Player");
-		var expected = "TestCharacter";
-		var actual = found.name;
+	public void GetHorizontalForce_WithPositiveXAxis_ReturnsVectorWithPositiveX()
+	{
+		playerControl.grounded = true;
+		playerControl.speed = 50f;
 
-        Assert.AreEqual(expected, actual);
-    }
+		var expected = Vector2.right * 50f;
+		var actual = playerControl.GetHorizontalForce(1f);
+
+		Assert.AreEqual(expected, actual);
+	}
 
 	[Test]
-	public void GetCappedVelocity_VelocityXIsGreaterThanMaxSpeed_VelocityEqualsNewVectorWithXAsMaxSpeed()
+	public void GetHorizontalForce_WithNegativeXAxis_ReturnsVectorWithNegativeX()
+	{
+		playerControl.grounded = true;
+		playerControl.speed = 50f;
+
+		var expected = -Vector2.right * 50f;
+		var actual = playerControl.GetHorizontalForce(-1f);
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetHorizontalForce_WithSameDirectionWhileNotGrounded_ReturnsVector2WithChanges()
+	{
+		playerControl.grounded = false;
+		playerControl.speed = 50f;
+
+		var expected = Vector2.right * 50f;
+		var actual = playerControl.GetHorizontalForce(1f);
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetHorizontalForce_WithDifferentDirectionWhileNotGrounded_ReturnsVector2ForCurrentVelocity()
+	{
+		playerControl.transform.localScale = new Vector3(-1, 1, 1);
+		playerControl.grounded = false;
+		playerControl.speed = -50f;
+
+		var expected = playerControl.GetBody().velocity;
+		var actual = playerControl.GetHorizontalForce(1f);
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetCappedVelocity_WhileVelocityXGreaterThanMaxSpeed_ReturnsNewVector2WithXAsMaxSpeed()
 	{
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
@@ -41,7 +80,18 @@ public class PlayerControlTest {
 	}
 
 	[Test]
-	public void GetCappedVelocity_VelocityXIsLessThanNegativeMaxSpeed_VelocityEqualsNewVectorWithXAsNegativeMaxSpeed()
+	public void GetJumpForce_WithPositiveJumpPower_ReturnsCorrectVector2()
+	{
+		playerControl.jumpPower = 300f;
+
+		var expected = Vector2.up * 300f;
+		var actual = playerControl.GetJumpForce();
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetCappedVelocity_WhileVelocityXLessThanNegativeMaxSpeed_ReturnsNewVector2WithXAsNegativeMaxSpeed()
 	{
 		playerControl.maxSpeed = 3f;
 		var body = playerControl.GetBody();
@@ -49,6 +99,36 @@ public class PlayerControlTest {
 
 		var expected = new Vector2(-playerControl.maxSpeed, body.velocity.y);
 		var actual = playerControl.GetCappedVelocity();
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetDirection_WithPositiveXAxis_ReturnsVector3WithPositiveX()
+	{
+		playerControl.grounded = true;
+		var expected = new Vector3(1, 1, 1);
+		var actual = playerControl.GetDirection(1f);
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetDirection_WithNegativeXAxis_ReturnsVector3WithNegativeX()
+	{
+		playerControl.grounded = true;
+		var expected = new Vector3(-1, 1, 1);
+		var actual = playerControl.GetDirection(-1f);
+
+		Assert.AreEqual(expected, actual);
+	}
+
+	[Test]
+	public void GetDirection_WithDifferentDirectionWhileNotGrounded_ReturnsVector3ForCurrentLocalScale()
+	{
+		playerControl.grounded = false;
+		var expected = new Vector3(1, 1, 1);
+		var actual = playerControl.GetDirection(-1f);
 
 		Assert.AreEqual(expected, actual);
 	}

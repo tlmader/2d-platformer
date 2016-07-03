@@ -45,22 +45,20 @@ public class PlayerControl : MonoBehaviour
 	 */
 	void FixedUpdate()
 	{
-		body.AddForce(GetForce(Input.GetAxis("Horizontal")));
+		body.AddForce(GetHorizontalForce(Input.GetAxis("Horizontal")));
 		body.velocity = GetCappedVelocity();
 	}
 
 	/**
 	 * This function returns a Vector2 used for Rigidbody2D.AddForce during horizontal movement.
 	 */
-	public Vector2 GetForce(float axis)
+	public Vector2 GetHorizontalForce(float h)
 	{
-		float h = axis;
-		var v = (Vector2.right * speed) * h;
-		var x = GetDirection(axis).x;
+		var x = GetDirection(h).x;
 		// Prevent changing direction while midair
-		if (!grounded && ((h > 0f && x < 0) || (h < 0f && x > 0f)))
+		if (!grounded && ((h > 0f && x < 0f) || (h < 0f && x > 0f)))
 			return body.velocity;
-		return v;
+		return (Vector2.right * speed) * h;
 	}
 
 	/**
@@ -70,7 +68,7 @@ public class PlayerControl : MonoBehaviour
 	{
 		return Vector2.up * jumpPower;
 	}
-
+		
 	/**
 	 * This function returns a Vector2 used for Rigidbody2D.velocity, used to prevent movement speed above the defined max speed.
 	 */
@@ -86,13 +84,13 @@ public class PlayerControl : MonoBehaviour
 	/**
 	 * This function returns a Vector3 used for transform.localScale, used to adjust the sprite's direction based on input axis.
 	 */
-	public Vector3 GetDirection(float axis)
+	public Vector3 GetDirection(float h)
 	{
 		if (!grounded)
 			return transform.localScale;
-		if (axis < -0.1f)
+		if (h < -0.1f)
 			return new Vector3(-1, 1, 1);
-		if (axis > 0.1f)
+		if (h > 0.1f)
 			return new Vector3(1, 1, 1);
 		return transform.localScale;
 	}
