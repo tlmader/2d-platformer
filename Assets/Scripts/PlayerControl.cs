@@ -15,7 +15,7 @@ public class PlayerControl : MonoBehaviour
 	/**
 	 * This function instantiates component objects used by this script.
 	 */
-	void Start()
+	public void Start()
 	{
 		body = gameObject.GetComponent<Rigidbody2D>();
 		animator = gameObject.GetComponent<Animator>();
@@ -25,7 +25,7 @@ public class PlayerControl : MonoBehaviour
 	/**
 	 * This function handles all regular updates for the player character.
 	 */
-	void Update()
+	public void Update()
 	{
 		// Animator conditions
 		animator.SetBool("Grounded", grounded);
@@ -52,9 +52,19 @@ public class PlayerControl : MonoBehaviour
 		body.AddForce((Vector2.right * speed) * h);
 
 		// Cap velocity at max speed
+		SetVelocityToMaxSpeed();
+	}
+
+	public Vector2 SetVelocityToMaxSpeed()
+	{
 		if (body.velocity.x > maxSpeed)
 			body.velocity = new Vector2(maxSpeed, body.velocity.y);
 		if (body.velocity.x < -maxSpeed)
 			body.velocity = new Vector2(-maxSpeed, body.velocity.y);
+		return body.velocity;
+	}
+
+	public Rigidbody2D GetBody() {
+		return body;
 	}
 }
