@@ -1,2 +1,2 @@
-# curiosity
-2D story-driven platformer game built with Unity 2D
+# 2d-platformer
+2D platformer built with Unity 2D
